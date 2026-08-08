@@ -1,0 +1,69 @@
+name: phpmyadmin
+icon: phpmyadmin
+type: service
+title: phpMyAdmin
+scalable: false
+
+options:
+- version: '5'
+  tag: '5.2.3'
+  default: true
+
+endpoints:
+- name: phpmyadmin
+  ports:
+  - name: http
+    number: 8080
+    protocol: http
+
+labels:
+- phpmyadmin
+- database-admin
+- mysql-admin
+
+links:
+- name: db
+  title: MariaDB or MySQL database
+  required: true
+  env:
+  - name: PMA_HOST
+    value: '{{link.database.host}}'
+  - name: PMA_PORT
+    value: '{{link.database.port}}'
+  selectors:
+  - type: db
+    labels:
+    - mariadb
+  - type: db
+    labels:
+    - mysql
+
+helm:
+  name: wodby
+  source: oci://registry-1.docker.io/wodby/phpmyadmin
+  chart: oci://registry-1.docker.io/wodby/phpmyadmin
+  version: 0.1.0
+  valueMappings:
+    replicas: replicaCount
+    fullnameOverride: fullnameOverride
+    serviceAccountName: serviceAccount.name
+    serviceAccountCreate: serviceAccount.create
+
+workloads:
+- name: main
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: '{{helm.release}}'
+  kind: deployment
+  primary: true
+  helm:
+    labels: podLabels
+    annotations: podAnnotations
+    volumes: extraVolumes
+  containers:
+  - name: phpmyadmin
+    image: phpmyadmin
+    helm:
+      resources: resources
+      env: envVars
+      mounts: extraVolumeMounts
