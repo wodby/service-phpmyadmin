@@ -2,6 +2,7 @@ name: phpmyadmin
 icon: phpmyadmin
 type: service
 title: phpMyAdmin
+guidance: GUIDANCE.md
 scalable: false
 
 options:
