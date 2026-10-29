@@ -1,6 +1,7 @@
 name: phpmyadmin
 icon: phpmyadmin
 type: service
+basicAuth: true
 title: phpMyAdmin
 guidance: GUIDANCE.md
 scalable: false
