@@ -50,7 +50,7 @@ helm:
   name: wodby
   source: oci://registry-1.docker.io/wodby/phpmyadmin
   chart: oci://registry-1.docker.io/wodby/phpmyadmin
-  version: 0.2.1
+  version: 0.2.2
   valueMappings:
     replicas: replicaCount
     fullnameOverride: fullnameOverride
